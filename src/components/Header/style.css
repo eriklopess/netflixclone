@@ -1,0 +1,25 @@
+header {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    background: transparent;
+    transition: all ease 0.5s;
+}
+
+header.black {
+    background: #141414;
+}
+
+.header--logo {
+    height: 30px;
+}
+
+.header--logo img {
+    height: 100%;
+}
