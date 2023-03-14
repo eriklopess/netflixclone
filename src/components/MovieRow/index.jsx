@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./style.css";
 
 export default function MovieRow({ movie }) {
-  const { title, items } = movie;
-
+  const { title } = movie;
+  const items = movie.items.results
   const [scrollX, setScrollX] = useState(-400);
   const handleLeftArrow = () => {
     let x = scrollX + Math.round(window.innerHeight / 2);
@@ -15,7 +15,7 @@ export default function MovieRow({ movie }) {
   };
   const handleRightArrow = () => {
     let x = scrollX - Math.round(window.innerHeight / 2);
-    const listWidth = items.results.length * 157;
+    const listWidth = items.length * 157;
     if (window.innerWidth - listWidth > x) {
       x = window.innerWidth - listWidth + 157;
     }
@@ -36,11 +36,11 @@ export default function MovieRow({ movie }) {
           className="movieRow--list"
           style={{
             marginLeft: scrollX,
-            width: items.results.length * 150,
+            width: items.length * 150,
           }}
         >
-          {items.results.length > 0 &&
-            items.results.map((item, key) => (
+          {items.length > 0 &&
+            items.map((item, key) => (
               <div className="movieRow--item" key={key}>
                 <img
                   src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}

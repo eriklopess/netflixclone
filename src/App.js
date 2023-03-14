@@ -10,22 +10,33 @@ export default function App() {
   const [movieList, setMovieList] = useState([]);
   const [featuredData, setFeaturedData] = useState(null);
   const [showHeader, setShowHeader] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const loadAll = async () => {
-      const list = await getHomeList();
-      setMovieList(list);
-
-      const originals = list.filter((i) => i.slug === "originals");
-      const randomChoice = Math.floor(
-        Math.random() * (originals[0].items.results.length - 1)
-      );
-      const chosen = originals[0].items.results[randomChoice];
-      const chosenInfo = await getMovieInfo(chosen.id, "tv");
-      setFeaturedData(chosenInfo);
+      const fetchedMovieList = await getHomeList();
+      return setMovieList(fetchedMovieList);
     };
 
     loadAll();
   }, []);
+
+  useEffect(() => {
+    const findFeatured = async () => {
+      console.log(movieList);
+      const originals = movieList.find((i) => i.slug === "originals");
+      const randomChoice = Math.floor(Math.random() * 19);
+      const chosen = originals.items.results[randomChoice];
+      const chosenInfo = await getMovieInfo(chosen.id, "tv");
+      setFeaturedData(chosenInfo);
+    };
+    
+    if (movieList.length > 0) {
+      findFeatured();
+      setLoading(false);
+    }
+  }, [movieList]);
+
 
   useEffect(() => {
     const scrollListener = () => {
@@ -43,7 +54,7 @@ export default function App() {
   }, []);
   return (
     <div className="page">
-      {movieList.length === 0 ? (
+      {loading ? (
         <div className="loading">
           <img src={Loading} alt="loading" />
         </div>
